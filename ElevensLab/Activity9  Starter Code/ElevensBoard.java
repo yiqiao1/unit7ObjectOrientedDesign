@@ -52,8 +52,20 @@ public class ElevensBoard extends Board {
 	 *         false otherwise.
 	 */
 	@Override
-	public boolean isLegal(List<Integer> selectedCards) {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 9 *** */
+	public boolean isLegal(List<Integer> selectedCards) 
+	{
+		if (selectedCards.size() == 2) 
+		{
+			return containsPairSum11(selectedCards);
+		} 
+		else if (selectedCards.size() == 3) 
+		{
+			return containsJQK(selectedCards);
+		} 
+		else 
+		{
+			return false;
+		}
 	}
 
 	/**
@@ -65,8 +77,10 @@ public class ElevensBoard extends Board {
 	 *         false otherwise.
 	 */
 	@Override
-	public boolean anotherPlayIsPossible() {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 9 *** */
+	public boolean anotherPlayIsPossible() 
+	{
+		List<Integer> cIndexes = cardIndexes();
+		return (containsPairSum11(cIndexes) || containsJQK(cIndexes));
 	}
 
 	/**
@@ -77,8 +91,20 @@ public class ElevensBoard extends Board {
 	 * @return true if the board entries in selectedCards
 	 *              contain an 11-pair; false otherwise.
 	 */
-	private boolean containsPairSum11(List<Integer> selectedCards) {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 9 *** */
+	private boolean containsPairSum11(List<Integer> selectedCards)
+	{
+		for (int i = 0; i < selectedCards.size(); i++) 
+		{
+			for (int j = i + 1; j < selectedCards.size(); j++) 
+			{
+				if (cardAt(i).pointValue() + cardAt(j).pointValue() == 11) 
+				{
+					return true;
+				}
+			}
+		}
+		
+		return false;
 	}
 
 	/**
@@ -89,7 +115,28 @@ public class ElevensBoard extends Board {
 	 * @return true if the board entries in selectedCards
 	 *              include a jack, a queen, and a king; false otherwise.
 	 */
-	private boolean containsJQK(List<Integer> selectedCards) {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 9 *** */
+	private boolean containsJQK(List<Integer> selectedCards) 
+	{
+		boolean foundJack = false;
+		boolean foundQueen = false;
+		boolean foundKing = false;
+		
+		for (int i = 0; i < selectedCards.size(); i++)
+		{
+			if (cardAt(i).rank().equals("jack")) 
+			{
+				foundJack = true;
+			} 
+			else if (cardAt(i).rank().equals("queen")) 
+			{
+				foundQueen = true;
+			} 
+			else if (cardAt(i).rank().equals("king")) 
+			{
+				foundKing = true;
+			}
+		}
+		
+		return (foundJack && foundQueen && foundKing);
 	}
 }
